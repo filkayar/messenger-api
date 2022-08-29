@@ -9,7 +9,7 @@ import javax.persistence.*
 class Conversation(
     @ManyToOne(optional = false)
     @JoinColumn(name = "sender_id", referencedColumnName = "id")
-    var cender: User? = null,
+    var sender: User? = null,
     @ManyToOne(optional = false)
     @JoinColumn(name = "recipient_id", referencedColumnName = "id")
     var recipient: User? = null,

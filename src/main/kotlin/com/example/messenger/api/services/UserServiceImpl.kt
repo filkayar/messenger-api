@@ -1,7 +1,7 @@
 package com.example.messenger.api.services
 
 import com.example.messenger.api.exceptions.InvalidUserIdException
-import com.example.messenger.api.exceptions.UserStatusEmtpyException
+import com.example.messenger.api.exceptions.UserStatusEmptyException
 import com.example.messenger.api.exceptions.UsernameUnavailableException
 import com.example.messenger.api.models.User
 import com.example.messenger.api.repositaries.UserRepository
@@ -25,7 +25,8 @@ class UserServiceImpl(val repository: UserRepository) : UserService {
     @Throws(UserStatusEmptyException::class)
     fun updateUserStatus(currentUser: User, updateDetails: User): User {
         if (!updateDetails.status.isEmpty()) {
-            currentUser.status = updateDetails.statusrepository.save(currentUser)
+            currentUser.status = updateDetails.status
+            repository.save(currentUser)
             return currentUser
         }
         throw UserStatusEmptyException()
@@ -37,7 +38,7 @@ class UserServiceImpl(val repository: UserRepository) : UserService {
 
     override fun retrieveUserData(username: String): User? {
         val user = repository.findByUsername(username)
-        obscurePasword(user)
+        obscurePassword(user)
         return user
     }
 
