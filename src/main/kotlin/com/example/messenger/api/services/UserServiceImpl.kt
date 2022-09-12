@@ -7,6 +7,7 @@ import com.example.messenger.api.models.User
 import com.example.messenger.api.repositaries.UserRepository
 import org.springframework.stereotype.Service
 
+@Service
 class UserServiceImpl(val repository: UserRepository) : UserService {
     @Throws(UsernameUnavailableException::class)
     override fun attemptRegistration(userDetails: User): User {
