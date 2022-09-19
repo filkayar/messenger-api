@@ -1,5 +1,3 @@
-@file:Suppress("DEPRECATION")
-
 package com.example.messenger.api.config
 
 import com.example.messenger.api.filters.JWTAuthenticationFilter
@@ -18,21 +16,26 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 @EnableWebSecurity
 class WebSecurityConfig(val userDetailsService: AppUserDetailsService): WebSecurityConfigurerAdapter() {
+    // Определяет какие пути должны быть защищены, а какие нет.
     @Throws(Exception::class)
     override fun configure(http: HttpSecurity) {
         http.csrf()
             .disable()
             .authorizeRequests()
-            .antMatchers(HttpMethod.POST, "/users/registrations")
-            .permitAll().antMatchers(HttpMethod.POST, "/LOGIN")
-            .permitAll()
-            .anyRequest()
-            .authenticated()
+
+            // разрешить все post-запросы к регистрации и авторизации
+            .antMatchers(HttpMethod.POST, "/users/registrations").permitAll()
+            .antMatchers(HttpMethod.POST, "/login").permitAll()
+
+            // запросы к остальным путям помечаем как "прошедшие авторизацию" если они прошли JWTLoginFilter (только для авторизации) или
+            // JWTAuthenticationManagerBuilder (аутентификация)
+            .anyRequest().authenticated()
             .and()
             .addFilterBefore(JWTLoginFilter("/login", authenticationManager()), UsernamePasswordAuthenticationFilter::class.java)
             .addFilterBefore(JWTAuthenticationFilter(), UsernamePasswordAuthenticationFilter::class.java)
     }
 
+    // Указывает применяемый кодировщик пароля
     @Throws(Exception::class)
     override fun configure(auth: AuthenticationManagerBuilder) {
         auth.userDetailsService<UserDetailsService>(userDetailsService).passwordEncoder(BCryptPasswordEncoder())

@@ -15,9 +15,7 @@ import javax.servlet.ServletException
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
-class JWTLoginFilter(url: String, authManager: AuthenticationManager) : AbstractAuthenticationProcessingFilter(
-    AntPathRequestMatcher(url)
-) {
+class JWTLoginFilter(url: String, authManager: AuthenticationManager) : AbstractAuthenticationProcessingFilter( AntPathRequestMatcher(url) ) {
     init {
         authenticationManager = authManager
     }
@@ -35,8 +33,7 @@ class JWTLoginFilter(url: String, authManager: AuthenticationManager) : Abstract
     }
 
     @Throws(IOException::class, ServletException::class)
-    override fun successfulAuthentication(
-        req: HttpServletRequest, res: HttpServletResponse, chain: FilterChain, auth: Authentication) {
+    override fun successfulAuthentication( req: HttpServletRequest, res: HttpServletResponse, chain: FilterChain, auth  : Authentication) {
         TokenAuthenticationService.addAuthentication(res, auth.name)
     }
 

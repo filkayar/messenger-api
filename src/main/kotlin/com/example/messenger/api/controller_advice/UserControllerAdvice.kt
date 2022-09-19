@@ -1,4 +1,4 @@
-package com.example.messenger.api.components
+package com.example.messenger.api.controller_advice
 
 import com.example.messenger.api.constants.ErrorResponse
 import com.example.messenger.api.constants.ResponseConstants
